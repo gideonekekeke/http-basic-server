@@ -1,45 +1,35 @@
-// creating a constant variable 
-const http = require('http')
-
-// creating a port
-const PORT = 7000
-
-const student = [
-    {name :"John"}
-    
-]
+const express = require('express')
+const mongoose = require('mongoose')
+const port = 5040;
 
 
-
-//creating the server entery point 
-const server = http.createServer((req, res)=>{
-    res.writeHead(200, {"Content-Type": "application/json"})
-    console.log('my server is now READY')
-    res.w
-  //  console.log(req.headers.authorization)
+const url = 'mongodb://localhost/assignmentDB'
 
 
-    // let body = []
-    //  req.on("data",(chunk)=> {
-    //      body.push(chunk);
-    //  })
-    //  .on("end", ()=>{
-    //      body = Buffer.concat(body).toString();
-    //      console.log(body)
-    //  })
+const app = express()
 
-    res.write('hello work this is gideon work')
 
-    
+mongoose.connect(url, {useNewUrlParser : true})
 
-    res.end(JSON.stringify(student))
+
+const con = mongoose.connection 
+
+
+con.on('open', ()=>{
+    console.log('connected...')
 })
-    
+
+app.use(express.json())
+
+const code = require('./Router/router')
+app.use('/', code)
 
 
 
-//server listening 
-server.listen(PORT, ()=>{
-    console.log('server listening to port 7000')
 
+app.listen(port, ()=>{
+    console.log('listening on port')
 })
+
+
+
